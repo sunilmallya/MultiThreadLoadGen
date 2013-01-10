@@ -382,7 +382,7 @@ static int readFileContents(const char *fname, char * buf){
 int main(int argc, char **argv){
 
 	if(argc <9){
-		cout << "./loadgen nthreds host port maxConnections npackets nSessions sleepInterval filename debugMode" <<endl;
+		cout << "./loadgen nthreds host port maxConnections npackets nSessions sleepInterval filename printMsg" <<endl;
 		exit(0);
 	}
 
