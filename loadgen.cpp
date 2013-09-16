@@ -42,21 +42,29 @@ class Threads{
 
 		void Start(){
 
-			int ret = pthread_create(&id,0, InitThread,this);
-			if(ret !=0)
-				throw "Thread creation error\n";
+			try{
+				int ret = pthread_create(&id,0, InitThread,this);
+				cout<<"Thread Created "<<ret <<endl;
+			}catch(int err){
+				cout<<"Thread creation failed " <<errno <<endl; 
+				cout<<err;
+				//if(ret !=0)
+				//	throw "Thread creation error\n";
+			}
 		}
 
 		void Join(){
 			pthread_join(id,0);
 		}
+		
+		virtual void Do() = 0;
 
 	protected:
 		pthread_t id;
 		pthread_key_t key;
 
 		static void * InitThread(void *t){
-			((Threads *)t)->Start();
+			((Threads *)t)->Do();
 		}	
 };
 
@@ -133,11 +141,11 @@ class Worker: public Threads{
 			server.sin_port = htons(port);
 		}
 
-		int Start() {
+		void Do() {
 			Run(); 
 			Terminate();
 		}
-
+		
 		void Terminate() {
 			cout << "Worker shutdown " << id<<endl<<std::flush;
 			for(int i=0; i< maxConn; i++){
