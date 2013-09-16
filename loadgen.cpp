@@ -29,7 +29,7 @@ using namespace std;
 
 bool done = false;
 const int READ_BUF_SIZE = 4096;
-char requestBuf[]= "SOME_REQUEST_DATA";
+char requestBuf[]= "GET / HTTP/1.1\r\n\r\n";
 int requestSize = strlen(requestBuf);
 int nThreads = 0;
 
@@ -436,12 +436,12 @@ int main(int argc, char **argv){
 		// Calculate request rate
 		if( t >= (prev + interval)){
 		
-			prev =t;
+			prev = t;
 			long cur = GetCounterStats(Worker::byteSent);
 			dataRate  =  (cur - prevDataRate) / interval ;			
 			prevDataRate = dataRate;
 
-			rps = ( GetCounterStats(Worker::closed) - prevRps )  / interval ;
+			rps = (GetCounterStats(Worker::closed) - prevRps) / interval ;
 			prevRps = GetCounterStats(Worker::closed);
 
 		}
